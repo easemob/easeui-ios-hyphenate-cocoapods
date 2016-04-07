@@ -15,6 +15,7 @@
 #import "EMAudioRecorderUtil.h"
 #import "EMVoiceConverter.h"
 #import "DemoErrorCode.h"
+#import "EaseSDKHelper.h"
 
 typedef NS_ENUM(NSInteger, EMAudioSession){
     EM_DEFAULT = 0,

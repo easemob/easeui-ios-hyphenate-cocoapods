@@ -12,6 +12,7 @@
 
 #import "EMAudioPlayerUtil.h"
 #import <AVFoundation/AVFoundation.h>
+#import "EaseSDKHelper.h"
 
 static EMAudioPlayerUtil *audioPlayerUtil = nil;
 

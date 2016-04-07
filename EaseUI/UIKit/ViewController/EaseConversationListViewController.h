@@ -15,6 +15,8 @@
 #import "EaseConversationModel.h"
 #import "EaseConversationCell.h"
 
+#import "EMSDK.h"
+
 typedef NS_ENUM(int, DXDeleteConvesationType) {
     DXDeleteConvesationOnly,
     DXDeleteConvesationWithMessages,

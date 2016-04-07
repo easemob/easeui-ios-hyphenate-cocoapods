@@ -11,6 +11,7 @@
  */
 
 #import "EMAudioRecorderUtil.h"
+#import "EaseSDKHelper.h"
 
 static EMAudioRecorderUtil *audioRecorderUtil = nil;
 

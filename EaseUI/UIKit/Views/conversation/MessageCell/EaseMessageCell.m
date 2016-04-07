@@ -20,6 +20,7 @@
 #import "EaseBubbleView+File.h"
 #import "UIImageView+EMWebCache.h"
 #import "EaseEmotionEscape.h"
+#import "EaseSDKHelper.h"
 
 CGFloat const EaseMessageCellPadding = 10;
 

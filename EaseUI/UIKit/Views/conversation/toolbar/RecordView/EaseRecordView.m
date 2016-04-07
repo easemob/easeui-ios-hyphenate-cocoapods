@@ -12,6 +12,7 @@
 
 #import "EaseRecordView.h"
 #import "EMCDDeviceManager.h"
+#import "EaseSDKHelper.h"
 
 @interface EaseRecordView ()
 {

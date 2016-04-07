@@ -14,6 +14,7 @@
 #import "EaseFaceView.h"
 
 #import "EaseEmotionManager.h"
+#import "EaseSDKHelper.h"
 
 #define kButtomNum 5
 
