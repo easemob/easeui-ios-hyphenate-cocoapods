@@ -15,4 +15,4 @@
 		
 接下来, 就可以正常使用环信的所有功能啦.
 
-具体的使用步骤可以参考我们的官方文档: [初始化](http://docs.easemob.com/im/300iosclientintegration/85easeuiguide)
+具体的使用步骤可以参考我们的官方文档: [集成文档](http://docs.easemob.com/im/300iosclientintegration/85easeuiguide)

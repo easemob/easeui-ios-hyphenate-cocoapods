@@ -23,7 +23,8 @@
 #import "EaseEmoji.h"
 #import "EaseEmotionEscape.h"
 #import "EaseCustomMessageCell.h"
-#import "UIImage+EMGIF.h"
+#import "UIImage+GIF.h"
+#import "EaseLocalDefine.h"
 
 #define KHintAdjustY    50
 
@@ -111,6 +112,19 @@
                                              selector:@selector(didBecomeActive)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
+    
+    [[EaseBaseMessageCell appearance] setSendBubbleBackgroundImage:[[UIImage imageNamed:@"EaseUIResource.bundle/chat_sender_bg"] stretchableImageWithLeftCapWidth:5 topCapHeight:35]];
+    [[EaseBaseMessageCell appearance] setRecvBubbleBackgroundImage:[[UIImage imageNamed:@"EaseUIResource.bundle/chat_receiver_bg"] stretchableImageWithLeftCapWidth:35 topCapHeight:35]];
+    
+    [[EaseBaseMessageCell appearance] setSendMessageVoiceAnimationImages:@[[UIImage imageNamed:@"EaseUIResource.bundle/chat_sender_audio_playing_full"], [UIImage imageNamed:@"EaseUIResource.bundle/chat_sender_audio_playing_000"], [UIImage imageNamed:@"EaseUIResource.bundle/chat_sender_audio_playing_001"], [UIImage imageNamed:@"EaseUIResource.bundle/chat_sender_audio_playing_002"], [UIImage imageNamed:@"EaseUIResource.bundle/chat_sender_audio_playing_003"]]];
+    [[EaseBaseMessageCell appearance] setRecvMessageVoiceAnimationImages:@[[UIImage imageNamed:@"EaseUIResource.bundle/chat_receiver_audio_playing_full"],[UIImage imageNamed:@"EaseUIResource.bundle/chat_receiver_audio_playing000"], [UIImage imageNamed:@"EaseUIResource.bundle/chat_receiver_audio_playing001"], [UIImage imageNamed:@"EaseUIResource.bundle/chat_receiver_audio_playing002"], [UIImage imageNamed:@"EaseUIResource.bundle/chat_receiver_audio_playing003"]]];
+    
+    [[EaseBaseMessageCell appearance] setAvatarSize:40.f];
+    [[EaseBaseMessageCell appearance] setAvatarCornerRadius:20.f];
+    
+    [[EaseChatBarMoreView appearance] setMoreViewBackgroundColor:[UIColor colorWithRed:240 / 255.0 green:242 / 255.0 blue:247 / 255.0 alpha:1.0]];
+    
+    [self tableViewDidTriggerHeaderRefresh];
 }
 
 - (void)setupEmotion
@@ -166,7 +180,6 @@
     [super viewWillDisappear:animated];
     
     self.isViewDidAppear = NO;
-    [_conversation markAllMessagesAsRead];
     [[EMCDDeviceManager sharedInstance] disableProximitySensor];
 }
 
@@ -395,9 +408,8 @@
     if ([compatiblePresets containsObject:AVAssetExportPresetHighestQuality]) {
         AVAssetExportSession *exportSession = [[AVAssetExportSession alloc]initWithAsset:avAsset
                                                                               presetName:AVAssetExportPresetHighestQuality];
-        mp4Url = [movUrl copy];
-        mp4Url = [mp4Url URLByDeletingPathExtension];
-        mp4Url = [mp4Url URLByAppendingPathExtension:@"mp4"];
+        NSString *mp4Path = [NSString stringWithFormat:@"%@/%d%d.mp4", [EMCDDeviceManager dataPath], (int)[[NSDate date] timeIntervalSince1970], arc4random() % 100000];
+        mp4Url = [NSURL fileURLWithPath:mp4Path];
         exportSession.outputURL = mp4Url;
         exportSession.shouldOptimizeForNetworkUse = YES;
         exportSession.outputFileType = AVFileTypeMPEG4;
@@ -755,7 +767,7 @@
 //            moreMessages = [weakSelf.dataSource messageViewController:weakSelf loadMessageFromTimestamp:timestamp count:count];
         }
         else{
-            moreMessages = [weakSelf.conversation loadMoreMessagesFromId:messageId limit:(int)count];
+            moreMessages = [weakSelf.conversation loadMoreMessagesFromId:messageId limit:(int)count direction:EMMessageSearchDirectionUp];
         }
         
         if ([moreMessages count] == 0) {
