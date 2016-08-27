@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = 'EaseUI'
-  spec.version      = '3.1.3'
+  spec.version      = '3.1.5'
   spec.license 	    = { :type => 'MIT', :file => 'LICENSE' }
   spec.summary      = 'EaseMob UI Kit'
   spec.homepage     = 'https://github.com/easemob/easeui-ios-hyphenate-cocoapods'
@@ -12,6 +12,4 @@ Pod::Spec.new do |spec|
   spec.requires_arc = true
   spec.resource     = 'EaseUI/resources/EaseUIResource.bundle'
   spec.xcconfig     = {'OTHER_LDFLAGS' => '-ObjC'}
-  spec.dependency 'MWPhotoBrowser', '~> 2.1.1'
-  spec.dependency 'MJRefresh', '~> 3.1.0'
 end

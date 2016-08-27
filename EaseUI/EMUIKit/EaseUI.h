@@ -10,12 +10,7 @@
  * from Hyphenate Inc.
  */
 
-#ifndef EaseUI_h
-#define EaseUI_h
-
 #import <Foundation/Foundation.h>
-
-#if TARGET_OS_IPHONE
 
 #import "EaseConversationListViewController.h"
 #import "EaseMessageViewController.h"
@@ -29,6 +24,7 @@
 #import "EaseBubbleView.h"
 #import "EaseUserCell.h"
 
+
 #import "EaseChineseToPinyin.h"
 #import "EaseEmoji.h"
 #import "EaseEmotionEscape.h"
@@ -39,42 +35,11 @@
 
 #import "NSDate+Category.h"
 #import "NSString+Valid.h"
-#import "UIImageView+WebCache.h"
+#import "UIImageView+EMWebCache.h"
 #import "UIViewController+HUD.h"
 #import "UIViewController+DismissKeyboard.h"
 #import "EaseLocalDefine.h"
 
-#else
+@interface EaseUI : NSObject
 
-#import <EaseUI/EaseConversationListViewController.h>
-#import <EaseUI/EaseMessageViewController.h>
-#import <EaseUI/EaseUsersListViewController.h>
-#import <EaseUI/EaseViewController.h>
-
-#import <EaseUI/IModelCell.h>
-#import <EaseUI/IModelChatCell.h>
-#import <EaseUI/EaseMessageCell.h>
-#import <EaseUI/EaseBaseMessageCell.h>
-#import <EaseUI/EaseBubbleView.h>
-#import <EaseUI/EaseUserCell.h>
-
-#import <EaseUI/EaseChineseToPinyin.h>
-#import <EaseUI/EaseEmoji.h>
-#import <EaseUI/EaseEmotionEscape.h>
-#import <EaseUI/EaseEmotionManager.h>
-#import <EaseUI/EaseSDKHelper.h>
-#import <EaseUI/EMCDDeviceManager.h>
-#import <EaseUI/EaseConvertToCommonEmoticonsHelper.h>
-
-#import <EaseUI/NSDate+Category.h>
-#import <EaseUI/NSString+Valid.h>
-#import <EaseUI/UIImageView+WebCache.h>
-#import <EaseUI/UIViewController+HUD.h>
-#import <EaseUI/UIViewController+DismissKeyboard.h>
-#import <EaseUI/EaseLocalDefine.h>
-
-#endif
-
-
-#endif /* EaseUI_h */
-
+@end
