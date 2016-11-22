@@ -23,7 +23,7 @@
 #import "EaseEmoji.h"
 #import "EaseEmotionEscape.h"
 #import "EaseCustomMessageCell.h"
-#import "UIImage+EMGIF.h"
+#import "UIImage+GIF.h"
 #import "EaseLocalDefine.h"
 #import "EaseSDKHelper.h"
 
@@ -95,6 +95,8 @@
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor colorWithRed:248 / 255.0 green:248 / 255.0 blue:248 / 255.0 alpha:1.0];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideImagePicker) name:@"hideImagePicker" object:nil];
     
     //Initialization
     CGFloat chatbarHeight = [EaseChatToolbar defaultHeight];
@@ -1879,6 +1881,16 @@
         }
         
         [_conversation markAllMessagesAsRead:nil];
+        if (self.dataSource && [self.dataSource respondsToSelector:@selector(messageViewControllerMarkAllMessagesAsRead:)]) {
+            [self.dataSource messageViewControllerMarkAllMessagesAsRead:self];
+        }
+    }
+}
+
+- (void)hideImagePicker
+{
+    if (_imagePicker && [EaseSDKHelper shareHelper].isShowingimagePicker) {
+        [_imagePicker dismissViewControllerAnimated:NO completion:nil];
     }
 }
 
@@ -1959,7 +1971,7 @@
             for (NSString *split in splits) {
                 if (split.length) {
                     NSString *atALl = NSEaseLocalizedString(@"group.atAll", @"all");
-                    if ([split compare:atALl options:NSCaseInsensitiveSearch range:NSMakeRange(0, atALl.length)] == NSOrderedSame) {
+                    if (split.length >= atALl.length && [split compare:atALl options:NSCaseInsensitiveSearch range:NSMakeRange(0, atALl.length)] == NSOrderedSame) {
                         [targets removeAllObjects];
                         [targets addObject:kGroupMessageAtAll];
                         return targets;
