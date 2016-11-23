@@ -20,8 +20,11 @@
 #define KNOTIFICATION_CALL @"callOutWithChatter"
 #define KNOTIFICATION_CALL_CLOSE @"callControllerClose"
 
+#define kGroupMessageAtList      @"em_at_list"
+#define kGroupMessageAtAll       @"all"
+
 #define kSDKConfigEnableConsoleLogger @"SDKConfigEnableConsoleLogger"
-#define kEaseUISDKConfigIsUseLite @"isUselibEaseMobClientSDKLite"
+#define kEaseUISDKConfigIsUseLite @"isUselibHyphenateClientSDKLite"
 
 @interface EaseSDKHelper : NSObject<EMClientDelegate>
 
@@ -31,13 +34,18 @@
 
 + (instancetype)shareHelper;
 
-#pragma mark - init easemob
+#pragma mark - init Hyphenate
 
-- (void)easemobApplication:(UIApplication *)application
+- (void)hyphenateApplication:(UIApplication *)application
 didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
                     appkey:(NSString *)appkey
               apnsCertName:(NSString *)apnsCertName
                otherConfig:(NSDictionary *)otherConfig;
+
+#pragma mark - receive remote notification
+
+- (void)hyphenateApplication:(UIApplication *)application
+didReceiveRemoteNotification:(NSDictionary *)userInfo;
 
 #pragma mark - send message
 
@@ -45,6 +53,12 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
                             to:(NSString *)to
                    messageType:(EMChatType)messageType
                     messageExt:(NSDictionary *)messageExt;
+
++ (EMMessage *)sendCmdMessage:(NSString *)action
+                            to:(NSString *)to
+                   messageType:(EMChatType)messageType
+                    messageExt:(NSDictionary *)messageExt
+                     cmdParams:(NSArray *)params;
 
 + (EMMessage *)sendLocationMessageWithLatitude:(double)latitude
                                      longitude:(double)longitude

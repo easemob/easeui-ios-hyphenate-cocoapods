@@ -10,10 +10,8 @@
  * from Hyphenate Inc.
  */
 
-#ifndef EaseUI_h
-#define EaseUI_h
-
-#import <Foundation/Foundation.h>
+#ifndef EASEUI_h
+#define EASEUI_h
 
 #if TARGET_OS_IPHONE
 
@@ -76,5 +74,4 @@
 #endif
 
 
-#endif /* EaseUI_h */
-
+#endif
