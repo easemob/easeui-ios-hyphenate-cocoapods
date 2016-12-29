@@ -76,6 +76,8 @@
     }
     self = [super initWithFrame:frame];
     if (self) {
+        self.accessibilityIdentifier = @"chatbar";
+
         _horizontalPadding = horizontalPadding;
         _verticalPadding = verticalPadding;
         _inputViewMinHeight = inputViewMinHeight;
@@ -97,6 +99,12 @@
 
 #pragma mark - setup subviews
 
+/*!
+ @method
+ @brief 加载视图
+ @discussion
+ @result
+ */
 - (void)_setupSubviews
 {
     //backgroundImageView
@@ -133,6 +141,7 @@
     
     //change input type
     UIButton *styleChangeButton = [[UIButton alloc] init];
+    styleChangeButton.accessibilityIdentifier = @"style";
     styleChangeButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     [styleChangeButton setImage:[UIImage imageNamed:@"EaseUIResource.bundle/chatBar_record"] forState:UIControlStateNormal];
     [styleChangeButton setImage:[UIImage imageNamed:@"EaseUIResource.bundle/chatBar_keyboard"] forState:UIControlStateSelected];
@@ -143,6 +152,7 @@
     
     //record
     self.recordButton = [[UIButton alloc] initWithFrame:self.inputTextView.frame];
+    self.recordButton.accessibilityIdentifier = @"record";
     self.recordButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
     [self.recordButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
     [self.recordButton setBackgroundImage:[[UIImage imageNamed:@"EaseUIResource.bundle/chatBar_recordBg"] stretchableImageWithLeftCapWidth:10 topCapHeight:10] forState:UIControlStateNormal];
@@ -160,6 +170,7 @@
     
     //emoji
     self.faceButton = [[UIButton alloc] init];
+    self.faceButton.accessibilityIdentifier = @"face";
     self.faceButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     [self.faceButton setImage:[UIImage imageNamed:@"EaseUIResource.bundle/chatBar_face"] forState:UIControlStateNormal];
     [self.faceButton setImage:[UIImage imageNamed:@"EaseUIResource.bundle/chatBar_faceSelected"] forState:UIControlStateHighlighted];
@@ -169,6 +180,7 @@
     
     //more
     self.moreButton = [[UIButton alloc] init];
+    self.moreButton.accessibilityIdentifier = @"more";
     self.moreButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     [self.moreButton setImage:[UIImage imageNamed:@"EaseUIResource.bundle/chatBar_more"] forState:UIControlStateNormal];
     [self.moreButton setImage:[UIImage imageNamed:@"EaseUIResource.bundle/chatBar_moreSelected"] forState:UIControlStateHighlighted];
@@ -272,6 +284,13 @@
     return self.leftItems;
 }
 
+/*!
+ @method
+ @brief 设置toolBar左侧菜单选项
+ @discussion
+ @param inputViewLeftItems 左侧选项
+ @result
+ */
 - (void)setInputViewLeftItems:(NSArray *)inputViewLeftItems
 {
     for (EaseChatToolbarItem *item in self.leftItems) {
@@ -323,6 +342,13 @@
     return self.rightItems;
 }
 
+/*!
+ @method
+ @brief 设置toolBar右侧菜单选项
+ @discussion
+ @param inputViewLeftItems 右侧选项
+ @result
+ */
 - (void)setInputViewRightItems:(NSArray *)inputViewRightItems
 {
     for (EaseChatToolbarItem *item in self.rightItems) {
@@ -374,6 +400,13 @@
 
 #pragma mark - private input view
 
+/*!
+ @method
+ @brief 获取textView的高度(实际为textView的contentSize的高度)
+ @discussion
+ @param textView 文本框
+ @result
+ */
 - (CGFloat)_getTextViewContentH:(UITextView *)textView
 {
     if (self.version >= 7.0)
@@ -384,6 +417,13 @@
     }
 }
 
+/*!
+ @method
+ @brief 通过传入的toHeight，跳转toolBar的高度
+ @discussion
+ @param toHeight
+ @result
+ */
 - (void)_willShowInputTextViewToHeight:(CGFloat)toHeight
 {
     if (toHeight < self.inputViewMinHeight) {
@@ -422,6 +462,13 @@
 
 #pragma mark - private bottom view
 
+/*!
+ @method
+ @brief 调整toolBar的高度
+ @discussion
+ @param bottomHeight 底部菜单的高度
+ @result
+ */
 - (void)_willShowBottomHeight:(CGFloat)bottomHeight
 {
     CGRect fromFrame = self.frame;
@@ -447,6 +494,13 @@
     }
 }
 
+/*!
+ @method
+ @brief 切换菜单视图
+ @discussion
+ @param bottomView 菜单视图
+ @result
+ */
 - (void)_willShowBottomView:(UIView *)bottomView
 {
     if (![self.activityButtomView isEqual:bottomView]) {
@@ -602,6 +656,14 @@
     [self textViewDidChange:self.inputTextView];
 }
 
+/*!
+ @method
+ @brief 删除文本光标前长度为length的字符串
+ @discussion
+ @param attr   待修改的富文本
+ @param length 字符串长度
+ @result   修改后的富文本
+ */
 -(NSMutableAttributedString*)backspaceText:(NSMutableAttributedString*) attr length:(NSInteger)length
 {
     NSRange range = [self.inputTextView selectedRange];
