@@ -90,6 +90,7 @@ static EaseLocationViewController *defaultLocation = nil;
         
         UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
         [sendButton setTitle:NSEaseLocalizedString(@"send", @"Send") forState:UIControlStateNormal];
+        sendButton.accessibilityIdentifier = @"send_location";
         [sendButton setTitleColor:[UIColor colorWithRed:32 / 255.0 green:134 / 255.0 blue:158 / 255.0 alpha:1.0] forState:UIControlStateNormal];
         [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
         [sendButton addTarget:self action:@selector(sendLocation) forControlEvents:UIControlEventTouchUpInside];
@@ -168,6 +169,12 @@ static EaseLocationViewController *defaultLocation = nil;
 
 #pragma mark - public
 
+/*!
+ @method
+ @brief 开启定位
+ @discussion
+ @result
+ */
 - (void)startLocation
 {
     if([CLLocationManager locationServicesEnabled]){
@@ -187,6 +194,13 @@ static EaseLocationViewController *defaultLocation = nil;
     [self showHudInView:self.view hint:NSEaseLocalizedString(@"location.ongoning", @"locating...")];
 }
 
+/*!
+ @method
+ @brief 地图添加大头针
+ @discussion
+ @param coords  位置信息
+ @result
+ */
 -(void)createAnnotationWithCoords:(CLLocationCoordinate2D)coords
 {
     if (_annotation == nil) {
@@ -199,6 +213,13 @@ static EaseLocationViewController *defaultLocation = nil;
     [_mapView addAnnotation:_annotation];
 }
 
+/*!
+ @method
+ @brief 大头针移动到指定位置
+ @discussion
+ @param locationCoordinate  指定位置
+ @result
+ */
 - (void)removeToLocation:(CLLocationCoordinate2D)locationCoordinate
 {
     [self hideHud];
