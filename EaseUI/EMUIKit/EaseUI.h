@@ -44,6 +44,33 @@
 
 #else
 
+#if ENABLE_LITE == 1
+#import <EaseUILite/EaseConversationListViewController.h>
+#import <EaseUILite/EaseMessageViewController.h>
+#import <EaseUILite/EaseUsersListViewController.h>
+#import <EaseUILite/EaseViewController.h>
+
+#import <EaseUILite/IModelCell.h>
+#import <EaseUILite/IModelChatCell.h>
+#import <EaseUILite/EaseMessageCell.h>
+#import <EaseUILite/EaseBaseMessageCell.h>
+#import <EaseUILite/EaseBubbleView.h>
+#import <EaseUILite/EaseUserCell.h>
+
+#import <EaseUILite/EaseChineseToPinyin.h>
+#import <EaseUILite/EaseEmoji.h>
+#import <EaseUILite/EaseEmotionEscape.h>
+#import <EaseUILite/EaseEmotionManager.h>
+#import <EaseUILite/EaseSDKHelper.h>
+#import <EaseUILite/EMCDDeviceManager.h>
+#import <EaseUILite/EaseConvertToCommonEmoticonsHelper.h>
+
+#import <EaseUILite/NSDate+Category.h>
+#import <EaseUILite/NSString+Valid.h>
+#import <EaseUILite/UIViewController+HUD.h>
+#import <EaseUILite/UIViewController+DismissKeyboard.h>
+#import <EaseUILite/EaseLocalDefine.h>
+#else
 #import <EaseUI/EaseConversationListViewController.h>
 #import <EaseUI/EaseMessageViewController.h>
 #import <EaseUI/EaseUsersListViewController.h>
@@ -66,10 +93,12 @@
 
 #import <EaseUI/NSDate+Category.h>
 #import <EaseUI/NSString+Valid.h>
-#import <EaseUI/UIImageView+WebCache.h>
 #import <EaseUI/UIViewController+HUD.h>
 #import <EaseUI/UIViewController+DismissKeyboard.h>
 #import <EaseUI/EaseLocalDefine.h>
+#endif
+
+#import <SDWebImage/UIImageView+WebCache.h>
 
 #endif
 
