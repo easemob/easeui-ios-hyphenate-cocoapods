@@ -13,12 +13,13 @@
 #import "EaseMessageReadManager.h"
 #import "UIImageView+WebCache.h"
 #import "EMCDDeviceManager.h"
+#import "MWPhotoBrowser.h"
 
 #define IMAGE_MAX_SIZE_5k 5120*2880
 
 static EaseMessageReadManager *detailInstance = nil;
 
-@interface EaseMessageReadManager()
+@interface EaseMessageReadManager() <MWPhotoBrowserDelegate>
 
 @property (strong, nonatomic) UIWindow *keyWindow;
 
