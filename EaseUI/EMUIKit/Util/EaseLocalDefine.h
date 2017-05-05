@@ -13,6 +13,8 @@
 #ifndef EaseLocalDefine_h
 #define EaseLocalDefine_h
 
-#define NSEaseLocalizedString(key, comment) [[NSBundle bundleWithPath:[[NSBundle bundleForClass:[self class]] pathForResource:@"EaseUIResource" ofType:@"bundle"]] localizedStringForKey:(key) value:@"" table:nil]
+#import "EaseMessageModel.h"
+
+#define NSEaseLocalizedString(key, comment) [[NSBundle bundleWithPath:[[NSBundle bundleForClass:[EaseMessageModel class]] pathForResource:@"EaseUIResource" ofType:@"bundle"]] localizedStringForKey:(key) value:@"" table:nil]
 
 #endif /* EaseLocalDefine_h */
