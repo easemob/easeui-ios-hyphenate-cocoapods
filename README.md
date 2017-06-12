@@ -5,9 +5,9 @@
 
 从3.1.1开始, 小伙伴们可以使用 Cocoapods 来集成环信3.0SDK版本的easeui啦, 集成方法如下:
 
-1. Podfile 文件添加如下代码
+1. Podfile 文件添加如下代码(建议集成EaseUI时指定其版本，与SDK保持版本相同)
 
-		pod 'EaseUI', :git =>'https://github.com/easemob/easeui-ios-hyphenate-cocoapods.git'
+		pod 'EaseUI', :git => 'https://github.com/easemob/easeui-ios-hyphenate-cocoapods.git', :tag => '3.3.2'
 		
 2. 使用时, 需要引入头文件, 在 pch 预编译文件中, 引入头文件如下:
 
