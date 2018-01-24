@@ -74,7 +74,7 @@ static EaseLocationViewController *defaultLocation = nil;
     self.title = NSEaseLocalizedString(@"location.messageType", @"location message");
     
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-    [backButton setImage:[UIImage easeImageNamed:@"EaseUIResource.bundle/back"] forState:UIControlStateNormal];
+    [backButton setImage:[UIImage imageNamed:@"EaseUIResource.bundle/back"] forState:UIControlStateNormal];
     [backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     [self.navigationItem setLeftBarButtonItem:backItem];
