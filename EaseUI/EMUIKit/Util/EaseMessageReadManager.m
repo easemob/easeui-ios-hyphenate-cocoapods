@@ -11,7 +11,7 @@
  */
 
 #import "EaseMessageReadManager.h"
-#import "UIImageView+WebCache.h"
+#import "UIImageView+EMWebCache.h"
 #import "EMCDDeviceManager.h"
 
 #import "MWPhotoBrowser.h"

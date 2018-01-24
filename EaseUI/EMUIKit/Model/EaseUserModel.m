@@ -20,7 +20,7 @@
     if (self) {
         _buddy = buddy;
         _nickname = @"";
-        _avatarImage = [UIImage easeImageNamed:@"EaseUIResource.bundle/user"];
+        _avatarImage = [UIImage imageNamed:@"EaseUIResource.bundle/user"];
     }
     
     return self;
