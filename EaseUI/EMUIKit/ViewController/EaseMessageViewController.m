@@ -405,10 +405,10 @@ typedef enum : NSUInteger {
     AVAuthorizationStatus videoAuthStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
     if (videoAuthStatus == AVAuthorizationStatusNotDetermined) {
         [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
-            if (aCompletion) {
-                aCompletion(granted ? EMCanRecord : EMRequestRecord);
-            }
         }];
+        if (aCompletion) {
+            aCompletion(EMRequestRecord);
+        }
     }
     else if(videoAuthStatus == AVAuthorizationStatusRestricted || videoAuthStatus == AVAuthorizationStatusDenied) {
         aCompletion(EMCanNotRecord);
@@ -1089,61 +1089,60 @@ typedef enum : NSUInteger {
         timeCell.title = object;
         return timeCell;
     }
-    else{
-        id<IMessageModel> model = object;
-        if (_delegate && [_delegate respondsToSelector:@selector(messageViewController:cellForMessageModel:)]) {
-            UITableViewCell *cell = [_delegate messageViewController:tableView cellForMessageModel:model];
-            if (cell) {
-                if ([cell isKindOfClass:[EaseMessageCell class]]) {
-                    EaseMessageCell *emcell= (EaseMessageCell*)cell;
-                    if (emcell.delegate == nil) {
-                        emcell.delegate = self;
-                    }
+    
+    id<IMessageModel> model = object;
+    if (_delegate && [_delegate respondsToSelector:@selector(messageViewController:cellForMessageModel:)]) {
+        UITableViewCell *cell = [_delegate messageViewController:tableView cellForMessageModel:model];
+        if (cell) {
+            if ([cell isKindOfClass:[EaseMessageCell class]]) {
+                EaseMessageCell *emcell= (EaseMessageCell*)cell;
+                if (emcell.delegate == nil) {
+                    emcell.delegate = self;
                 }
-                return cell;
             }
+            return cell;
         }
-        
-        if (_dataSource && [_dataSource respondsToSelector:@selector(isEmotionMessageFormessageViewController:messageModel:)]) {
-            BOOL flag = [_dataSource isEmotionMessageFormessageViewController:self messageModel:model];
-            if (flag) {
-                NSString *CellIdentifier = [EaseCustomMessageCell cellIdentifierWithModel:model];
-                //send cell
-                EaseCustomMessageCell *sendCell = (EaseCustomMessageCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-                
-                // Configure the cell...
-                if (sendCell == nil) {
-                    sendCell = [[EaseCustomMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier model:model];
-                    sendCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                }
-                
-                if (_dataSource && [_dataSource respondsToSelector:@selector(emotionURLFormessageViewController:messageModel:)]) {
-                    EaseEmotion *emotion = [_dataSource emotionURLFormessageViewController:self messageModel:model];
-                    if (emotion) {
-                        model.image = [UIImage sd_animatedGIFNamed:emotion.emotionOriginal];
-                        model.fileURLPath = emotion.emotionOriginalURL;
-                    }
-                }
-                sendCell.model = model;
-                sendCell.delegate = self;
-                return sendCell;
-            }
-        }
-        
-        NSString *CellIdentifier = [EaseMessageCell cellIdentifierWithModel:model];
-        
-        EaseBaseMessageCell *sendCell = (EaseBaseMessageCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        
-        // Configure the cell...
-        if (sendCell == nil) {
-            sendCell = [[EaseBaseMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier model:model];
-            sendCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            sendCell.delegate = self;
-        }
-        
-        sendCell.model = model;
-        return sendCell;
     }
+    
+    if (_dataSource && [_dataSource respondsToSelector:@selector(isEmotionMessageFormessageViewController:messageModel:)]) {
+        BOOL flag = [_dataSource isEmotionMessageFormessageViewController:self messageModel:model];
+        if (flag) {
+            NSString *CellIdentifier = [EaseCustomMessageCell cellIdentifierWithModel:model];
+            //send cell
+            EaseCustomMessageCell *sendCell = (EaseCustomMessageCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            
+            // Configure the cell...
+            if (sendCell == nil) {
+                sendCell = [[EaseCustomMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier model:model];
+                sendCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            }
+            
+            if (_dataSource && [_dataSource respondsToSelector:@selector(emotionURLFormessageViewController:messageModel:)]) {
+                EaseEmotion *emotion = [_dataSource emotionURLFormessageViewController:self messageModel:model];
+                if (emotion) {
+                    model.image = [UIImage sd_animatedGIFNamed:emotion.emotionOriginal];
+                    model.fileURLPath = emotion.emotionOriginalURL;
+                }
+            }
+            sendCell.model = model;
+            sendCell.delegate = self;
+            return sendCell;
+        }
+    }
+    
+    NSString *CellIdentifier = [EaseMessageCell cellIdentifierWithModel:model];
+    
+    EaseBaseMessageCell *sendCell = (EaseBaseMessageCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    // Configure the cell...
+    if (sendCell == nil) {
+        sendCell = [[EaseBaseMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier model:model];
+        sendCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        sendCell.delegate = self;
+    }
+    
+    sendCell.model = model;
+    return sendCell;
 }
 
 #pragma mark - Table view delegate
@@ -1430,14 +1429,7 @@ typedef enum : NSUInteger {
 
 - (void)didStartRecordingVoiceAction:(UIView *)recordView
 {
-    if ([self.delegate respondsToSelector:@selector(messageViewController:didSelectRecordView:withEvenType:)]) {
-        [self.delegate messageViewController:self didSelectRecordView:recordView withEvenType:EaseRecordViewTypeTouchDown];
-    } else {
-        if ([self.recordView isKindOfClass:[EaseRecordView class]]) {
-            [(EaseRecordView *)self.recordView recordButtonTouchDown];
-        }
-    }
-    
+    __weak typeof(self) weakSelf = self;
     [self _canRecordCompletion:^(EMRecordResponse recordResponse) {
         switch (recordResponse) {
             case EMRequestRecord:
@@ -1445,11 +1437,20 @@ typedef enum : NSUInteger {
                 break;
             case EMCanRecord:
             {
+                if ([weakSelf.delegate respondsToSelector:@selector(messageViewController:didSelectRecordView:withEvenType:)]) {
+                    [weakSelf.delegate messageViewController:weakSelf
+                                         didSelectRecordView:recordView
+                                                withEvenType:EaseRecordViewTypeTouchDown];
+                } else {
+                    if ([weakSelf.recordView isKindOfClass:[EaseRecordView class]]) {
+                        [(EaseRecordView *)weakSelf.recordView recordButtonTouchDown];
+                    }
+                }
                 _isRecording = YES;
                 EaseRecordView *tmpView = (EaseRecordView *)recordView;
                 tmpView.center = self.view.center;
-                [self.view addSubview:tmpView];
-                [self.view bringSubviewToFront:recordView];
+                [weakSelf.view addSubview:tmpView];
+                [weakSelf.view bringSubviewToFront:recordView];
                 int x = arc4random() % 100000;
                 NSTimeInterval time = [[NSDate date] timeIntervalSince1970];
                 NSString *fileName = [NSString stringWithFormat:@"%d%d",(int)time,x];
@@ -1623,7 +1624,7 @@ typedef enum : NSUInteger {
 
 #pragma mark - EMChatManagerDelegate
 
-- (void)didReceiveMessages:(NSArray *)aMessages
+- (void)messagesDidReceive:(NSArray *)aMessages
 {
     for (EMMessage *message in aMessages) {
         if ([self.conversation.conversationId isEqualToString:message.conversationId]) {
@@ -1640,7 +1641,7 @@ typedef enum : NSUInteger {
     }
 }
 
-- (void)didReceiveCmdMessages:(NSArray *)aCmdMessages
+- (void)cmdMessagesDidReceive:(NSArray *)aCmdMessages
 {
     for (EMMessage *message in aCmdMessages) {
         if ([self.conversation.conversationId isEqualToString:message.conversationId]) {
@@ -1901,8 +1902,7 @@ typedef enum : NSUInteger {
     [self.tableView reloadData];
 }
 
-- (void)_sendMessage:(EMMessage *)message
-    isNeedUploadFile:(BOOL)isUploadFile
+- (void)sendMessage:(EMMessage *)message isNeedUploadFile:(BOOL)isUploadFile
 {
     if (self.conversation.type == EMConversationTypeGroupChat){
         message.chatType = EMChatTypeGroupChat;
@@ -1961,7 +1961,7 @@ typedef enum : NSUInteger {
 - (void)sendTextMessage:(NSString *)text withExt:(NSDictionary*)ext
 {
     EMMessage *message = [EaseSDKHelper getTextMessage:text to:self.conversation.conversationId messageType:[self _messageTypeFromConversationType] messageExt:ext];
-    [self _sendMessage:message isNeedUploadFile:NO];
+    [self sendMessage:message isNeedUploadFile:NO];
 }
 
 - (void)sendLocationMessageLatitude:(double)latitude
@@ -1969,7 +1969,7 @@ typedef enum : NSUInteger {
                          andAddress:(NSString *)address
 {
     EMMessage *message = [EaseSDKHelper getLocationMessageWithLatitude:latitude longitude:longitude address:address to:self.conversation.conversationId messageType:[self _messageTypeFromConversationType] messageExt:nil];
-    [self _sendMessage:message isNeedUploadFile:NO];
+    [self sendMessage:message isNeedUploadFile:NO];
 }
 
 - (void)sendImageMessageWithData:(NSData *)imageData
@@ -1983,7 +1983,7 @@ typedef enum : NSUInteger {
     }
     
     EMMessage *message = [EaseSDKHelper getImageMessageWithImageData:imageData to:self.conversation.conversationId messageType:[self _messageTypeFromConversationType] messageExt:nil];
-    [self _sendMessage:message isNeedUploadFile:YES];
+    [self sendMessage:message isNeedUploadFile:YES];
 }
 
 - (void)sendImageMessage:(UIImage *)image
@@ -1997,7 +1997,7 @@ typedef enum : NSUInteger {
     }
     
     EMMessage *message = [EaseSDKHelper getImageMessageWithImage:image to:self.conversation.conversationId messageType:[self _messageTypeFromConversationType] messageExt:nil];
-    [self _sendMessage:message isNeedUploadFile:YES];
+    [self sendMessage:message isNeedUploadFile:YES];
 }
 
 - (void)sendVoiceMessageWithLocalPath:(NSString *)localPath
@@ -2012,7 +2012,7 @@ typedef enum : NSUInteger {
     }
     
     EMMessage *message = [EaseSDKHelper getVoiceMessageWithLocalPath:localPath duration:duration to:self.conversation.conversationId messageType:[self _messageTypeFromConversationType] messageExt:nil];
-    [self _sendMessage:message isNeedUploadFile:YES];
+    [self sendMessage:message isNeedUploadFile:YES];
 }
 
 - (void)sendVideoMessageWithURL:(NSURL *)url
@@ -2026,11 +2026,11 @@ typedef enum : NSUInteger {
     }
     
     EMMessage *message = [EaseSDKHelper getVideoMessageWithURL:url to:self.conversation.conversationId messageType:[self _messageTypeFromConversationType] messageExt:nil];
-    [self _sendMessage:message isNeedUploadFile:YES];
+    [self sendMessage:message isNeedUploadFile:YES];
 }
 
 - (void)sendFileMessageWith:(EMMessage *)message {
-    [self _sendMessage:message isNeedUploadFile:YES];
+    [self sendMessage:message isNeedUploadFile:YES];
 }
 
 #pragma mark - notifycation

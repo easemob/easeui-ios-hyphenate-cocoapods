@@ -480,6 +480,9 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
  */
 - (void)sendFileMessageWith:(EMMessage *)message;
 
+- (void)sendMessage:(EMMessage *)message
+   isNeedUploadFile:(BOOL)isUploadFile;
+
 
 /*!
  @method
@@ -515,5 +518,16 @@ shouldSendHasReadAckForMessage:(EMMessage *)message
  */
 - (BOOL)shouldSendHasReadAckForMessage:(EMMessage *)message
                                  read:(BOOL)read;
+
+/*!
+ @method
+ @brief 发送消息
+ @discussion
+ @param message         聊天消息
+ @param isUploadFile    是否上传附件
+ @result
+ */
+- (void)sendMessage:(EMMessage *)message
+   isNeedUploadFile:(BOOL)isUploadFile;
 
 @end
