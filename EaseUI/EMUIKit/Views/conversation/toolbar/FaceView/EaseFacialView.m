@@ -110,8 +110,8 @@
         [_imageButton setTitle:nil forState:UIControlStateNormal];
         [_imageButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
         [_imageButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-        [_imageButton setImage:[UIImage easeImageNamed:@"EaseUIResource.bundle/faceDelete"] forState:UIControlStateNormal];
-        [_imageButton setImage:[UIImage easeImageNamed:@"EaseUIResource.bundle/faceDelete_select"] forState:UIControlStateHighlighted];
+        [_imageButton setImage:[UIImage imageNamed:@"EaseUIResource.bundle/faceDelete"] forState:UIControlStateNormal];
+        [_imageButton setImage:[UIImage imageNamed:@"EaseUIResource.bundle/faceDelete_select"] forState:UIControlStateHighlighted];
         [_imageButton addTarget:self action:@selector(sendEmotion:) forControlEvents:UIControlEventTouchUpInside];
     }
 }
