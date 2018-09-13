@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = 'EaseUILite'
-  spec.version      = '3.5.0'
+  spec.version      = '3.5.1'
   spec.license       = { :type => 'Copyright', :text => 'EaseMob Inc. 2017' }
   spec.summary      = 'EaseMob UI Kit'
   spec.homepage     = 'https://github.com/easemob/easeui-ios-hyphenate-cocoapods'
@@ -19,5 +19,5 @@ Pod::Spec.new do |spec|
   spec.xcconfig     = {'OTHER_LDFLAGS' => '-ObjC', 'GCC_PREPROCESSOR_DEFINITIONS' => 'ENABLE_LITE=1'}
   spec.dependency 'MWPhotoBrowser', '~> 2.1.1'    
   spec.dependency 'MJRefresh', '~> 3.1.0'
-  spec.dependency 'HyphenateLite', '~> 3.5.0'
+  spec.dependency 'HyphenateLite', '~> 3.5.1'
 end
