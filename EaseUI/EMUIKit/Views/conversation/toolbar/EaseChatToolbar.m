@@ -133,7 +133,7 @@
     _inputTextView.scrollEnabled = YES;
     _inputTextView.returnKeyType = UIReturnKeySend;
     _inputTextView.enablesReturnKeyAutomatically = YES; // UITextView内部判断send按钮是否可以用
-    _inputTextView.placeHolder = NSEaseLocalizedString(@"message.toolBar.inputPlaceHolder", @"input a new message");
+    _inputTextView.placeHolder = @"输入新消息";
     _inputTextView.delegate = self;
     _inputTextView.backgroundColor = [UIColor clearColor];
     _inputTextView.layer.borderColor = [UIColor colorWithWhite:0.8f alpha:1.0f].CGColor;
@@ -593,12 +593,7 @@
         return NO;
     }
     else if ([text isEqualToString:@"@"]) {
-        if ([self.delegate respondsToSelector:@selector(didInputAtInLocation:)]) {
-            if ([self.delegate didInputAtInLocation:range.location]) {
-                [self _willShowInputTextViewToHeight:[self _getTextViewContentH:self.inputTextView]];
-                return NO;
-            }
-        }
+        //
     }
     else if ([text length] == 0) {
         //delete one character
@@ -616,6 +611,15 @@
 
 - (void)textViewDidChange:(UITextView *)textView
 {
+    NSString *text = textView.text;
+    if ([text hasSuffix:@"@"]) {
+        if ([self.delegate respondsToSelector:@selector(didInputAtInLocation:)]) {
+            if ([self.delegate didInputAtInLocation:(text.length - 1)]) {
+                [self _willShowInputTextViewToHeight:[self _getTextViewContentH:self.inputTextView]];
+            }
+        }
+    }
+    
     [self _willShowInputTextViewToHeight:[self _getTextViewContentH:textView]];
 }
 
